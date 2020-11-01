@@ -82,6 +82,19 @@ double run_experiment(size_t arr_size, Direction dir, size_t iterations){
 }
 
 int main() {
+  // Intel® Core™ i5-6300HQ
+  //
+  // L1, KB	4x32 + 4x32
+  // L2, KB	4x256
+  // L3, KB	6144
+  // ______________________________________
+  // |   1   |   2   |   3   |  4  |   5  |
+  // --------------------------------------
+  // | 128kb | 256kb |  1mb  | 6mb | 9mb  |
+  // --------------------------------------
+  // |  32k  |  64k  | 512k  | 3m  | 4.5m |
+  // --------------------------------------
+
   std::cout << run_experiment(10000, Direction::randomm, 1000) << " ns" << std::endl;
 
   return 0;
