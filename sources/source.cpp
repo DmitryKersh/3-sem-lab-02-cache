@@ -3,18 +3,30 @@
 
 #include <header.hpp>
 
+
 enum Direction{
   forward,
   reverse,
   randomm
 };
 
-double run_experiment(size_t arr_size, Direction dir, size_t iterations){
-  int* arr = new int[arr_size];
-  // initializing array
-  for (size_t i = 0; i < arr_size; i++){
-    arr[i] = rand();
+std::string to_string(const Direction& d){
+  switch (d) {
+    case Direction::forward: return "Forward";
+    case Direction::randomm: return "Random";
+    case Direction::reverse: return "Reverse";
   }
+  return "error";
+}
+
+double run_experiment(size_t arr_size, Direction dir, size_t iterations){
+  std::vector<int> arr(arr_size);
+  // initializing array with order
+  for (size_t i = 0; i < arr_size; i++){
+    arr[i] = i;
+  }
+  std::random_shuffle(arr.begin(), arr.end());
+
   int k;
   clock_t time;
 
@@ -52,25 +64,18 @@ double run_experiment(size_t arr_size, Direction dir, size_t iterations){
       break;
     }
     case Direction::randomm:{
-      /*
-      // preparing random order
-      std::vector<size_t> order(arr_size / 16);
-      for (size_t i = 0; i < arr_size; i++){
-        order[i] = i;
-      }
-      std::shuffle(order.begin(), order.end(), rand());
-       */
-      // warming up
-      for (size_t i = 0; i < arr_size; i++){
-        //k = arr[16 * order[i]];
+      /*for (size_t i = 0; i < arr_size; i++){
         k = arr[(rand() % arr_size)/16];
+      }*/
+      for (size_t i = 0; i < arr_size; i += 16) {
+        k = arr[i];
       }
       // working
+      k = 2;
       time = clock();
       for (size_t iter_number = 0; iter_number < iterations; iter_number++){
         for (size_t i = 0; i < arr_size; i++) {
-          // k = arr[16 * order[i]];
-          k = arr[rand() % arr_size];
+          k = arr[k];
         }
       }
       time = clock() - time;
@@ -81,21 +86,65 @@ double run_experiment(size_t arr_size, Direction dir, size_t iterations){
   return double(time) / iterations / arr_size * 1000.0; // returns nanoseconds
 }
 
+void report_multiple_experiments(const std::vector<ulong>& sizes,
+                                 std::ostream& os,
+                                 Direction d){
+    os << "#Investigation:\n###"
+       << to_string(d) << std::endl
+       << "experiments:\n" << std::endl;
+
+  for (size_t exp_n = 0; exp_n < sizes.size(); exp_n++){
+    os << "\t - experiment:\n"
+          "\t\tnumber: " << exp_n + 1 << std::endl
+       << "\t\tinput_data:\n"
+          "\t\t\tbuffer_size: " << sizes[exp_n] / 1024 << " KB\n"
+          "\t\tresults:\n"
+          "\t\t\tduration: " << run_experiment(sizes[exp_n], d, 1000)
+       << std::endl << std::endl;
+  }
+
+}
+
 int main() {
-  // Intel® Core™ i5-6300HQ
+  // Intel® Core™ i5-6300HQ 2.30 GHz
   //
   // L1, KB	4x32 + 4x32
   // L2, KB	4x256
   // L3, KB	6144
-  // ______________________________________
-  // |   1   |   2   |   3   |  4  |   5  |
-  // --------------------------------------
-  // | 128kb | 256kb |  1mb  | 6mb | 9mb  |
-  // --------------------------------------
-  // |  32k  |  64k  | 512k  | 3m  | 4.5m |
-  // --------------------------------------
+  // ________________________________________
+  // |   1   |   2   |   3   |   4   |   5  |
+  // ----------------------------------------
+  // | 128kb | 256kb |  1mb  | 6mb   | 9mb  |
+  // ----------------------------------------
+  // |  32k  |  64k  | 256k  | 1.5m  | 2.25m|
+  // ----------------------------------------
 
-  std::cout << run_experiment(10000, Direction::randomm, 1000) << " ns" << std::endl;
+  std::vector<ulong> arr_sizes = {32 * 1024,
+                                  64 * 1024,
+                                  256 * 1024,
+                                  3 * 512 * 1024,
+                                  9 * 256 * 1024};
+  std::ofstream ofs("../RESULT.md");
 
+  if (!ofs){
+    std::cerr << "File not found!" << std::endl;
+  } else {
+    clock_t time = clock();
+    report_multiple_experiments(arr_sizes, ofs, Direction::forward);
+    time = clock() - time;
+    std::cout << "Forward access done in " << double(time) / 1000000.0 << "s." << std::endl;
+
+    time = clock();
+    report_multiple_experiments(arr_sizes, ofs, Direction::reverse);
+    time = clock() - time;
+    std::cout << "Reverse access done in " << double(time) / 1000000.0 << "s." << std::endl;
+
+    time = clock();
+    report_multiple_experiments(arr_sizes, ofs, Direction::randomm);
+    time = clock() - time;
+    std::cout << "Random access done in " << double(time) / 1000000.0 << "s." << std::endl;
+
+    std::cout << "Success!" << std::endl;
+  }
   return 0;
 }
