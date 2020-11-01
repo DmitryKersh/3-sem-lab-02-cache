@@ -1,7 +1,6 @@
 // Copyright 2020 Dmitry Karpukhin d.karpukhin@mail.ru
 
-#include <algorithm>
-#include <vector>
+
 #include <header.hpp>
 
 enum Direction{
@@ -29,7 +28,7 @@ double run_experiment(size_t arr_size, Direction dir, size_t iterations){
       // working
       time = clock();
       for (size_t iter_number = 0; iter_number < iterations; iter_number++) {
-        for (size_t i = 0; i < arr_size; i += 16) {
+        for (size_t i = 0; i < arr_size; i++) {
           k = arr[i];
         }
       }
@@ -45,7 +44,7 @@ double run_experiment(size_t arr_size, Direction dir, size_t iterations){
       // working
       time = clock();
       for (size_t iter_number = 0; iter_number < iterations; iter_number++) {
-        for (size_t i = arr_size; i > 0; i -= 16) {
+        for (size_t i = arr_size; i > 0; i--) {
           k = arr[i];
         }
       }
@@ -71,18 +70,19 @@ double run_experiment(size_t arr_size, Direction dir, size_t iterations){
       for (size_t iter_number = 0; iter_number < iterations; iter_number++){
         for (size_t i = 0; i < arr_size; i++) {
           // k = arr[16 * order[i]];
-          k = arr[(rand() % arr_size) / 16];
+          k = arr[rand() % arr_size];
         }
       }
       time = clock() - time;
       break;
     }
   }
-
-  return long(time) / CLOCKS_PER_SEC;
+  time = time + k - k; // to avoid warning 'k is unused'
+  return double(time) / iterations / arr_size * 1000.0; // returns nanoseconds
 }
 
 int main() {
+  std::cout << run_experiment(10000, Direction::randomm, 1000) << " ns" << std::endl;
 
   return 0;
 }

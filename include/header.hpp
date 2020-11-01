@@ -5,5 +5,8 @@
 
 #include <cstddef>
 #include <ctime>
+#include <algorithm>
+#include <vector>
+#include <iostream>
 
 #endif // INCLUDE_HEADER_HPP_
