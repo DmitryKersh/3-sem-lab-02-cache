@@ -37,6 +37,9 @@ add_executable(tests
   # TODO: enum your files and delete this comment
   ${CMAKE_CURRENT_SOURCE_DIR}/tests/test.cpp
 )
+add_executable(main_func
+        ${CMAKE_CURRENT_SOURCE_DIR}/sources/source.cpp
+        )
 
 # TODO: change template word to project name and delete this comment
 target_include_directories(template 
@@ -45,6 +48,9 @@ target_include_directories(template
 target_include_directories(tests 
   PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
+target_include_directories(main_func
+        PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
 # TODO: change template word to project name and delete this comment
 target_link_libraries(tests GTest::main template)
 
