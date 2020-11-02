@@ -67,7 +67,9 @@ double run_experiment(size_t arr_size, Direction dir, size_t iterations) {
       }
 
       // working
-      k = rand() % arr_size;
+      auto* seed = new unsigned int;
+      *seed = 1231323;
+      k = rand_r(seed) % arr_size;
       time = clock();
       for (size_t iter_number = 0; iter_number < iterations; iter_number++) {
         for (size_t i = 0; i < arr_size; i++) {
