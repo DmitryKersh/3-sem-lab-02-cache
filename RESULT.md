@@ -7,35 +7,35 @@ experiments:
 		input_data:
 			buffer_size: 32 KB
 		results:
-			duration: 3.0755
+			duration: 2.86011
 
 	 - experiment:
 		number: 2
 		input_data:
 			buffer_size: 64 KB
 		results:
-			duration: 3.02554
+			duration: 2.65846
 
 	 - experiment:
 		number: 3
 		input_data:
 			buffer_size: 256 KB
 		results:
-			duration: 2.97072
+			duration: 2.62509
 
 	 - experiment:
 		number: 4
 		input_data:
 			buffer_size: 1536 KB
 		results:
-			duration: 2.95653
+			duration: 2.6706
 
 	 - experiment:
 		number: 5
 		input_data:
 			buffer_size: 2304 KB
 		results:
-			duration: 3.05477
+			duration: 2.69173
 
 #Investigation:
 ###Reverse
@@ -46,35 +46,35 @@ experiments:
 		input_data:
 			buffer_size: 32 KB
 		results:
-			duration: 2.99408
+			duration: 2.60205
 
 	 - experiment:
 		number: 2
 		input_data:
 			buffer_size: 64 KB
 		results:
-			duration: 2.94221
+			duration: 2.64302
 
 	 - experiment:
 		number: 3
 		input_data:
 			buffer_size: 256 KB
 		results:
-			duration: 2.8578
+			duration: 2.60516
 
 	 - experiment:
 		number: 4
 		input_data:
 			buffer_size: 1536 KB
 		results:
-			duration: 2.9231
+			duration: 2.64845
 
 	 - experiment:
 		number: 5
 		input_data:
 			buffer_size: 2304 KB
 		results:
-			duration: 2.99682
+			duration: 2.6701
 
 #Investigation:
 ###Random
@@ -85,33 +85,33 @@ experiments:
 		input_data:
 			buffer_size: 32 KB
 		results:
-			duration: 7.17749
+			duration: 6.49066
 
 	 - experiment:
 		number: 2
 		input_data:
 			buffer_size: 64 KB
 		results:
-			duration: 8.66699
+			duration: 7.86824
 
 	 - experiment:
 		number: 3
 		input_data:
 			buffer_size: 256 KB
 		results:
-			duration: 16.3362
+			duration: 14.5449
 
 	 - experiment:
 		number: 4
 		input_data:
 			buffer_size: 1536 KB
 		results:
-			duration: 38.6119
+			duration: 17.4173
 
 	 - experiment:
 		number: 5
 		input_data:
 			buffer_size: 2304 KB
 		results:
-			duration: 63.1844
+			duration: 59.4138
 
